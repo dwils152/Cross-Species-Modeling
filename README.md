@@ -25,6 +25,31 @@ Nextflow is a workflow manager that will, submit jobs to the HPC
    
 5. Test your installation by running `nextflow run hello`
 
+## Install the conda environment:
+To run the code you will need to install all of its dependencies. They are all grouped together in a conda environment.
+
+1. Download the code from the repository onto the cluster and move into the directory
+   ```bash
+   git clone https://github.com/dwils152/Cross-Species-Modeling.git;
+   cd Cross-Species-Modeling
+   ```
+
+2. Load Anaconda
+   ```bash
+   module load anaconda3
+   ```
+   
+3. Build the environment from the `environment.yml` file
+  ```bash
+     conda env create -f environment.yml -n cross_species
+  ```
+
+4. Activate the environment
+   ```
+   conda activate cross_species
+   ```
+
+Now you should have installed all the resources you need to generate predictions.
 
 
 
