@@ -20,15 +20,17 @@ class SequenceDataset(Dataset):
         super(SequenceDataset, self).__init__()
         self.fasta_path = fasta_path
         self.fasta_list = self._read_fasta()
+        self.has_labels = labels_path is not None
 
-        self.mmap_labels = np.memmap(
-            labels_path,
-            dtype='int32', 
-            mode='r', 
-            shape=(len(self.fasta_list), 2047))
-            #shape=(len(self.fasta_list), len(self.fasta_list[0])))
+        if self.has_labels:
+            self.mmap_labels = np.memmap(
+                labels_path,
+                dtype='int32', 
+                mode='r', 
+                shape=(len(self.fasta_list), 2047))
+                #shape=(len(self.fasta_list), len(self.fasta_list[0])))
+
         self.max_length = max_length
-
 
         self.tokenizer = AutoTokenizer.from_pretrained(
             base_model,
@@ -50,8 +52,8 @@ class SequenceDataset(Dataset):
     def __getitem__(self, idx):
         record = self.fasta_list[idx]
         sequence = str(record.seq)
-
-        label = self.mmap_labels[idx, :]
+        label = torch.zeros(2047)
+        
         inputs = self.tokenizer(
             sequence,
             max_length=self.max_length,
@@ -62,8 +64,11 @@ class SequenceDataset(Dataset):
 
         input_ids = inputs["input_ids"].squeeze()  # Remove the batch dimension
         attention_mask = inputs["attention_mask"].squeeze()
-        label = torch.tensor(label).squeeze().float()
-
+        
+        if self.has_labels:
+            label = self.mmap_labels[idx, :]
+            label = torch.tensor(label).squeeze().float()
+            
         # print(f'input: {input_ids.shape}')
         # print(f'mask: {attention_mask.shape}')
         # print(f'label: {label.shape}')

@@ -19,7 +19,9 @@ echo ""
 export NXF_TEMP=/scratch/${USER}/tmp
 export TMPDIR=/scratch/${USER}/tmp
 
-nextflow run main.nf -resume
+nextflow run main.nf \
+    --sample_sheet sample_sheet.csv \
+    -resume
 
 
 

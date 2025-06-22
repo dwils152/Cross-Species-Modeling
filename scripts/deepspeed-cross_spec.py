@@ -50,17 +50,14 @@ def main(args):
     # Run predictions
     predictions = trainer.predict(hf_dataset)
     logits = predictions.predictions
-    labels = predictions.label_ids
     probs = 1 / (1 + np.exp(-logits))
 
     # Flatten the outputs
     flat_probs = probs.flatten()
-    flat_labels = labels.flatten()
 
     # Create a DataFrame and save to CSV
     df = pd.DataFrame({
         "probs": flat_probs,
-        "labels": flat_labels
     })
     df.to_csv(args.output_csv, index=False)
 
@@ -82,12 +79,16 @@ if __name__ == "__main__":
                         help='Path to the fine-tuned model checkpoint.')
     parser.add_argument('--lora_dir',type=str, default='Lora',
                         help='Path to the Lora adapter and config')
-    parser.add_argument('--output_csv', type=str, default='predictions_labels.csv',
+    parser.add_argument('--output_csv', type=str, default='predictions.csv',
                         help='Output CSV file to save predictions and labels.')
     parser.add_argument('--run_name', type=str, default=None,
                         help='Name for the run (defaults to YYYYMMDD_HHMMSS)')
     parser.add_argument("--deepspeed", type=str, default=None, 
                     help="Path to the DeepSpeed config file.")
+    parser.add_argument(
+        "--local_rank", type=int, default=-1,
+        help="Local rank for distributed inference/training."
+    )
     args = parser.parse_args()
 
     if args.run_name is None:

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score, confusion_matrix, ConfusionMatrixDisplay
 
-data = pd.read_csv('predictions_labels.csv')  # file should have columns "probs" and "labels"
+data = pd.read_csv('predictions.csv')  # file should have columns "probs" and "labels"
 
 # Extract the probability predictions and true labels
 y_probs = data['probs'].values
