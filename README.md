@@ -51,6 +51,27 @@ To run the code you will need to install all of its dependencies. They are all g
 
 Now you should have installed all the resources you need to generate predictions.
 
+## Making Predictions:
+To make predictions you will need the trained model and a sample sheet. I could not upload the model to GitHub
+because it was too large. When you are ready let me know, and I will give you the model.
 
+1. Fill out your sample sheet with the absolute path and the name of each species.
+   See the example sheet above
 
+2. Run the pipeline
+   ```bash
+   sbatch run_main.slurm
+   ```
+   Depending on the size of the genomes this may take several hours. Each prediction will use 4 gpus and
+   the cluster's user limit is 8, so if you have more that 2 genomes in your sample sheet they will not
+   run concurrently, but they will be submitted to the job queue.
 
+4. Postprocess your results
+   The pipeline  will produce a results directory for each species.
+   ```text
+   📦Gorilla
+    ┣ 📂Predictions
+    ┃ ┗ 📜predictions.csv
+    ┣ 📜mGorGor1.chunks.bed
+    ┗ 📜mGorGor1.chunks.fa
+   ```
