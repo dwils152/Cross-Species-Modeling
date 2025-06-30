@@ -40,6 +40,7 @@ def main(args):
         output_dir=args.run_name,
         per_device_eval_batch_size=4,
         report_to=[],
+        dataloader_num_workers=16,
     )
     trainer = Trainer(
         model=lora_model,

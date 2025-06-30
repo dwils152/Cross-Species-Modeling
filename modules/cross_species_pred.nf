@@ -37,7 +37,7 @@ process predict {
         """
         PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
-        deepspeed --num_gpus 4 ${params.scripts}/deepspeed-cross_spec.py \
+        deepspeed --num_gpus 1 ${params.scripts}/deepspeed-cross_spec.py \
             --fasta  ${fasta} \
             --model_checkpoint ${model} \
             --lora_dir ${lora} \

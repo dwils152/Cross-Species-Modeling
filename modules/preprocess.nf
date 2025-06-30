@@ -13,7 +13,7 @@ workflow PREPROCESS_GENOME {
 }
 
 process tokenize_genome {
-    label "PythonMultiprocess"
+    label "MedMem"
     publishDir "${params.results}/${organism}", mode: 'copy' 
     input:
         tuple   path(genome),
